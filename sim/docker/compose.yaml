@@ -1,0 +1,19 @@
+name: sidelane-rtgs
+
+services:
+  sim:
+    build:
+      context: ../..               # = repo root
+      dockerfile: sim/docker/Dockerfile
+    image: sidelane-sim:latest
+    platform: linux/amd64         # .so 为 x86-64;ARM 主机(Apple 芯片)走兼容模式
+    container_name: sidelane-sim
+    ports:
+      - "8080:8080"               # 浏览器开 http://localhost:8080
+    cap_add:
+      - NET_ADMIN                 # 允许容器内 netem 整形 lo
+    environment:
+      # 给节点间 TCP 注入真实 RTT;留空=回环原速。例:NET_DELAY=5ms NET_JITTER=1ms docker compose up
+      - NET_DELAY=${NET_DELAY:-}
+      - NET_JITTER=${NET_JITTER:-}
+    restart: "no"

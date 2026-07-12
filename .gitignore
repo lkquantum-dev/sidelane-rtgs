@@ -1,0 +1,16 @@
+# build output
+*.class
+
+# logs / scratch
+*.log
+_*.log
+__pycache__/
+*.pyc
+
+# OS noise
+Thumbs.db
+.DS_Store
+
+# regenerated figure PDFs (repo ships PNG only for GitHub preview)
+bench/fig/*.pdf
+bench/fig_cn/*.pdf

@@ -1,0 +1,7 @@
+# 只把 Docker 构建需要的送入上下文
+*
+!native/linux-x64/libpqcpro_unix.so
+!sim/app/sidelane-sim.jar
+!sim/docker/lib/jna-5.14.0.jar
+!sim/docker/entrypoint.sh
+!sim/docker/clear_execstack.py

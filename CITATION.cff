@@ -1,0 +1,23 @@
+cff-version: 1.2.0
+message: "If you use this testbed, please cite the paper below."
+title: "SideLane-RTGS: A Protocol-Level, Reproducible Testbed for Post-Quantum Migration of RTGS"
+authors:
+  - family-names: "Liu"
+    given-names: "Rui"
+    orcid: "https://orcid.org/0000-0001-7762-7117"
+    affiliation: "Suzhou LangKong Post-Quantum Technology Co., Ltd."
+version: "3.6"
+date-released: "2026-07-12"
+doi: "10.5281/zenodo.21309889"
+repository-code: "https://github.com/lkquantum-dev/sidelane-rtgs"
+license: "LicenseRef-Research-and-Evaluation"
+preferred-citation:
+  type: article
+  title: "A Protocol-Level, Reproducible Testbed for Post-Quantum Migration of RTGS: Engineering Realisation and Validation of the Modular Decoupling Scheme"
+  authors:
+    - family-names: "Liu"
+      given-names: "Rui"
+      orcid: "https://orcid.org/0000-0001-7762-7117"
+      affiliation: "Suzhou LangKong Post-Quantum Technology Co., Ltd."
+  year: 2026
+  notes: "arXiv preprint, 2026."

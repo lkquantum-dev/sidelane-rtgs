@@ -1,0 +1,47 @@
+Research and Evaluation License (v1.1)
+
+Copyright (c) 2026 Suzhou LangKong Post-Quantum Technology Co., Ltd.
+(苏州朗空后量子科技有限公司). All rights reserved.
+
+This repository contains two categories of material:
+
+  (A) SCRIPTS AND DATA — the contents of `bench/` (experiment harness scripts,
+      plotting scripts, CSV data, figures) and the build/orchestration files
+      under `sim/docker/` (Dockerfile, compose files, entrypoint, utility
+      scripts) and `sim/run_webui.ps1`.
+
+  (B) EXECUTABLES — the prebuilt testbed program `sim/app/sidelane-sim.jar`
+      and the LK LEGO PQC library binaries under `native/` and
+      `sim/docker/lib/` (`dllpqcpro.dll`, `libpqcpro_unix.so`).
+
+1. SCRIPTS AND DATA. Permission is hereby granted, free of charge, to use,
+   copy, modify and run the materials in category (A) solely for
+   NON-COMMERCIAL purposes of academic research, peer review, artifact
+   evaluation, teaching, and reproduction of the results reported in the
+   associated papers, provided this license text and the copyright notice
+   are retained and modifications are clearly marked.
+
+2. EXECUTABLES. The materials in category (B) may be executed, unmodified,
+   solely for the purposes stated in Section 1. They may not be
+   redistributed outside unmodified copies of this artifact, incorporated
+   into other software, modified, translated, disassembled, decompiled or
+   otherwise reverse engineered, except to the extent such a restriction is
+   prohibited by applicable law.
+
+3. COMMERCIAL USE — including, without limitation, use in or for a product
+   or service, or use in production financial infrastructure — requires a
+   separate written license from the copyright holder.
+
+4. NO PATENT LICENSE. No rights are granted, by implication, estoppel or
+   otherwise, under any patent or patent application of the copyright
+   holder, including patents covering the modular decoupling method
+   implemented by this artifact.
+
+5. THE MATERIALS ARE PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+   OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+   MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
+   IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+   CLAIM, DAMAGES OR OTHER LIABILITY ARISING FROM, OUT OF OR IN CONNECTION
+   WITH THE MATERIALS OR THE USE OR OTHER DEALINGS IN THE MATERIALS.
+
+Contact the copyright holder for commercial licensing.

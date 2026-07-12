@@ -1,0 +1,9 @@
+scenario,mode,final_status,reconcile_retries,note
+S1,A,SETTLED,0,inline
+S1,B,SETTLED,0,decoupled
+S2,A,FAILED,0,inline
+S2,B,ROLLED_BACK,20,decoupled
+S3,A,PARTITIONED,0,inline
+S3,B,PARTITIONED,0,decoupled
+S4,A,ROLLED_BACK,0,inline
+S4,B,ROLLED_BACK,0,decoupled

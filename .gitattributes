@@ -1,0 +1,12 @@
+# 保证脚本在任何平台 checkout 都是 LF(否则 Linux 下 shebang/entrypoint 失效)
+*.sh   text eol=lf
+*.py   text eol=lf
+*.bat  text eol=crlf
+*.ps1  text eol=crlf
+entrypoint.sh text eol=lf
+Dockerfile    text eol=lf
+# 二进制不做换行转换
+*.so   binary
+*.dll  binary
+*.jar  binary
+*.png  binary

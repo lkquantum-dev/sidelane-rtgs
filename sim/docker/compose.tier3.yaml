@@ -1,0 +1,110 @@
+name: sidelane-rtgs-tier3
+
+# 真 Tier 3 · 并排双流水线:11 个节点各自独立容器 + Web 聚合容器(共 12)。
+#   ① Leap 基线:part-a → nsp-a → esmig-a → rtgs-a(内联验签)
+#   ② 论文方案:part-b → nsp-b → new-nsp-b → new-esmig-b → esmig-b → svs-b(PQC-SVS 协同枢纽)→ rtgs-b(账本)
+# 启动:  docker compose -f compose.tier3.yaml up --build   →  http://localhost:8080
+# 加网络延迟:  NET_DELAY=5ms docker compose -f compose.tier3.yaml up --build
+
+x-node: &node
+  build: { context: ../.., dockerfile: sim/docker/Dockerfile }
+  image: sidelane-sim:latest
+  platform: linux/amd64
+  cap_add: [NET_ADMIN]
+  environment: &nodeenv
+    APP: node
+    NODE_PORT: "9000"
+    CTL_PORT: "8090"
+    WEB_INGEST: http://web:8080/ingest
+    NET_DEV: eth0
+    NET_DELAY: ${NET_DELAY:-}
+    NET_JITTER: ${NET_JITTER:-}
+
+services:
+  # ---------- ① Leap 基线 ----------
+  rtgs-a:
+    <<: *node
+    container_name: sidelane-rtgs-a
+    environment: { <<: *nodeenv, NODE_ID: RTGS-A, NODE_ROLE: RTGS_CORE }
+  esmig-a:
+    <<: *node
+    container_name: sidelane-esmig-a
+    environment: { <<: *nodeenv, NODE_ID: ESMIG-A, NODE_ROLE: ESMIG, NODE_CONNECT: "rtgs-a:9000" }
+    depends_on: [rtgs-a]
+  nsp-a:
+    <<: *node
+    container_name: sidelane-nsp-a
+    environment: { <<: *nodeenv, NODE_ID: NSP-A, NODE_ROLE: NSP, NODE_CONNECT: "esmig-a:9000" }
+    depends_on: [esmig-a]
+  part-a:
+    <<: *node
+    container_name: sidelane-part-a
+    environment:
+      <<: *nodeenv
+      NODE_ID: PART-A
+      NODE_ROLE: PARTICIPANT
+      NODE_MODE: A
+      ROUTE: "NSP-A,ESMIG-A,RTGS-A"
+      NODE_CONNECT: "nsp-a:9000"
+    depends_on: [nsp-a]
+
+  # ---------- ② 论文方案 ----------
+  rtgs-b:                                   # 论文方案:RTGS 为终端账本(受 PQC-SVS 信令驱动),无下游
+    <<: *node
+    container_name: sidelane-rtgs-b
+    environment: { <<: *nodeenv, NODE_ID: RTGS-B, NODE_ROLE: RTGS_CORE }
+  svs-b:                                     # PQC-SVS 协同枢纽:下发预授信 + 异步验签 → 回签 RTGS
+    <<: *node
+    container_name: sidelane-svs-b
+    environment: { <<: *nodeenv, NODE_ID: PQC-SVS-B, NODE_ROLE: PQC_SVS, NODE_CONNECT: "rtgs-b:9000" }
+    depends_on: [rtgs-b]
+  esmig-b:
+    <<: *node
+    container_name: sidelane-esmig-b
+    environment: { <<: *nodeenv, NODE_ID: ESMIG-B, NODE_ROLE: ESMIG, NODE_CONNECT: "svs-b:9000" }
+    depends_on: [svs-b]
+  new-esmig-b:
+    <<: *node
+    container_name: sidelane-new-esmig-b
+    environment: { <<: *nodeenv, NODE_ID: NEW-ESMIG-B, NODE_ROLE: NEW_ESMIG, NODE_CONNECT: "esmig-b:9000" }
+    depends_on: [esmig-b]
+  new-nsp-b:
+    <<: *node
+    container_name: sidelane-new-nsp-b
+    environment: { <<: *nodeenv, NODE_ID: NEW-NSP-B, NODE_ROLE: NEW_NSP, NODE_CONNECT: "new-esmig-b:9000" }
+    depends_on: [new-esmig-b]
+  nsp-b:
+    <<: *node
+    container_name: sidelane-nsp-b
+    environment: { <<: *nodeenv, NODE_ID: NSP-B, NODE_ROLE: NSP, NODE_CONNECT: "new-nsp-b:9000" }
+    depends_on: [new-nsp-b]
+  part-b:
+    <<: *node
+    container_name: sidelane-part-b
+    environment:
+      <<: *nodeenv
+      NODE_ID: PART-B
+      NODE_ROLE: PARTICIPANT
+      NODE_MODE: B
+      ROUTE: "NSP-B,NEW-NSP-B,NEW-ESMIG-B,ESMIG-B,PQC-SVS-B,RTGS-B"
+      NODE_CONNECT: "nsp-b:9000"
+    depends_on: [nsp-b]
+
+  # ---------- Web 聚合 ----------
+  web:
+    build: { context: ../.., dockerfile: sim/docker/Dockerfile }
+    image: sidelane-sim:latest
+    platform: linux/amd64
+    container_name: sidelane-web
+    environment:
+      APP: web
+      WEB_PORT: "8080"
+      PART_A_URL: http://part-a:8090
+      PART_B_URL: http://part-b:8090
+      RTGS_A_URL: http://rtgs-a:8090
+      SVS_B_URL: http://svs-b:8090
+      RTGS_B_URL: http://rtgs-b:8090
+      ESMIG_A_URL: http://esmig-a:8090
+      ESMIG_B_URL: http://esmig-b:8090
+    ports: ["8080:8080"]
+    depends_on: [part-a, part-b, rtgs-a, svs-b, rtgs-b]
