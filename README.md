@@ -4,7 +4,7 @@
 
 Artifact for the paper:
 
-> **A Protocol-Level, Reproducible Testbed for Post-Quantum Migration of RTGS: Engineering Realisation and Validation of the Modular Decoupling Scheme.** Rui Liu. (arXiv preprint, 2026. 中文版:《面向 RTGS 后量子迁移的协议级可复现测试床:模块化解耦方案的工程实现与验证》。)
+> **A Protocol-Level, Reproducible Testbed for Post-Quantum Migration of RTGS: Engineering Realisation and Validation of the Modular Decoupling Scheme.** Rui Liu. (Manuscript, 2026. 中文版:《面向 RTGS 后量子迁移的协议级可复现测试床:模块化解耦方案的工程实现与验证》。)
 
 Companion papers:
 - Analytical: *A Cost-Model Audit of Project Leap Phase 2: Latency, Capacity, and Migration Safety in Post-Quantum RTGS.* R. Liu, N. Zeng. Accepted at WorldS4 2026 (Springer LNNS).
