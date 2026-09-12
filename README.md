@@ -41,7 +41,7 @@ sim/docker/      Dockerfile + compose topologies (single image / 12-container ti
 setup-windows.bat                Windows one-click env-check + launcher menu
 setup-ubuntu.sh                  Linux one-click env-check + launcher menu
 sim/run_webui.ps1 / .sh          Interactive WebUI launcher (Windows / Linux)
-bench/run_bench.ps1 / .sh        One-click experiments E2–E8 → bench/out/*.csv
+bench/run_bench.ps1 / .sh        One-click experiments E2–E8 and E10 → bench/out/*.csv
 bench/e9_wan.py, e9_wan.ps1      Cross-container WAN-shaping harness (E9)
 bench/plot.py                    Regenerate all charts from CSVs (plot_cn.py: Chinese labels)
 bench/arch_figs.py               Regenerate architecture & sequence diagrams (Fig. 1–2)
@@ -66,7 +66,7 @@ No build step. Uses `native/windows-x64/dllpqcpro.dll`.
 # interactive digital-twin WebUI at http://127.0.0.1:8080
 powershell -ExecutionPolicy Bypass -File sim/run_webui.ps1
 
-# headless: run experiments E2-E8 (all, or a subset: e2 e5 ...)
+# headless: run experiments E2-E8 + E10 (all, or a subset: e2 e5 e10 ...)
 powershell -ExecutionPolicy Bypass -File bench/run_bench.ps1
 ```
 
@@ -83,7 +83,7 @@ Or run the launchers directly. Prereqs: Java 17+ runtime on `PATH`
 # interactive digital-twin WebUI at http://127.0.0.1:8080
 bash sim/run_webui.sh
 
-# headless: run experiments E2-E8 (all, or a subset: e2 e5 ...)
+# headless: run experiments E2-E8 + E10 (all, or a subset: e2 e5 e10 ...)
 bash bench/run_bench.sh
 ```
 
@@ -137,3 +137,17 @@ Scripts and data (`bench/`, `sim/docker/` build files): research/evaluation use 
 Executables (`sim/app/sidelane-sim.jar`, `native/` libraries): proprietary, run-only for
 research/replication, redistribution restricted — see [LICENSE](LICENSE) and `native/README.md`.
 Third-party components: see [THIRD_PARTY_NOTICES.md](THIRD_PARTY_NOTICES.md).
+
+## Changes in v3.7 (IEEE Access revision R1, September 2026)
+
+- **New experiment E10** (`bench/out/E10_sustained_load.csv`): sustained arrival at the Leap operating
+  point (verify = 210 ms) with *equal verifier budgets* for both pipelines (`W` = 1 or 4 bounded verifier
+  workers, applied to the inline baseline and to the side-lane verifier alike). Reports decision vs. final
+  latency, final-settlement throughput, maximum pending count / exposure, tampered vs. watchdog-induced
+  rollbacks, reconciliation retries and drain time. Run with `run_bench e10`.
+- **Node options** (used by E10 only; default off, so E2–E9 behave exactly as in v3.6): a bounded verifier
+  pool (`verifierWorkers`), an in-flight guard so that watchdog retries do not enqueue duplicate
+  verifications, a pending-set counter (`pendingCount`) and rollback counters.
+- **Data correction**: the `E8_crypto_microbench.csv` shipped in v3.6 came from a different (slower,
+  non-native) run than the one plotted in the paper's Fig. 4 / Table 5. v3.7 ships the CSV that matches
+  the paper (nested verify p50 = 123.5 µs). No number in the paper changes.

@@ -6,7 +6,7 @@ authors:
     given-names: "Rui"
     orcid: "https://orcid.org/0000-0001-7762-7117"
     affiliation: "Suzhou LangKong Post-Quantum Technology Co., Ltd."
-version: "3.6"
+version: "3.7"
 date-released: "2026-07-12"
 doi: "10.5281/zenodo.21309889"
 repository-code: "https://github.com/lkquantum-dev/sidelane-rtgs"

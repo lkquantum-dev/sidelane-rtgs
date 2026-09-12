@@ -37,13 +37,13 @@ T = {
   "nnsp":"New NSP","nesmig":"New ESMIG","svs":"PQC-SVS\n(coordinator)",
   "inline":"inline hybrid verify\non the critical path (blocking)",
   "nested":"nested signature:\ninner ML-DSA-87 + outer RSA-2048",
-  "dep":"DEP leg: ML-KEM-768 + RSA-OAEP hybrid KEM → AES-256-GCM tunnel",
+  "dep":"DEP leg: ML-KEM-768 + RSA-OAEP\nhybrid KEM → AES-256-GCM tunnel",
   "gate":"legacy gate:\nouter RSA only",
   "precredit":"pre-credit /\nverdict signals",
   "sidelane":"side-lane verify: inner ML-DSA\n+ EWMA watchdog",
   "variantC":"variant ③ (side-lane, §6.6): identical chain without the coordinator hop;\nRTGS orchestrates VERIFY/VERDICT against a PQC-SVS sidecar",
   "obs":"structured event stream → WebUI digital twin  ·  headless bench harness → CSV (all results)",
-  "deploy":"same image: single-process (in-VM nodes)\nor 12-container Docker + tc netem",
+  "deploy":"same image: single-process\n(in-VM nodes) or 12-container\nDocker + tc netem",
   "tcp":"real TCP envelope protocol · real ISO 20022 pacs.008 + BAH",
   "f2_title":"Fig. 2  Pre-credit / async-verify / compensating-rollback (S1–S4b), coordinator topology",
   "ln":["Participant","ESMIG (legacy)","PQC-SVS (coordinator)","RTGS ledger"],
@@ -52,7 +52,7 @@ T = {
   "m_s2":"S2  pre-credit instruction",
   "m_pend":"mark Pending\n(bounded exposure)",
   "m_prov":"provisional receipt PRECREDITED  —  settlement decision ≈ 4 ms",
-  "m_s3":"S3  verify inner ML-DSA off the critical path\nwatchdog: T_timeout ≥ E[Tc] + 2·T_RTT + k·σ (EWMA, online)",
+  "m_s3":"S3  verify inner ML-DSA off the critical path\nwatchdog: T_timeout ≥ E[Tpqc] + 2·T_RTT + k·σ (EWMA, online)",
   "alt_a":"S4a — verdict VALID","m_s4a":"VERDICT: VALID","m_commit":"commit\n(settled)","m_fin_a":"final receipt SETTLED",
   "alt_b":"S4b — invalid / watchdog exhausted (≤ 20 reconcile retries)",
   "m_s4b":"VERDICT: INVALID  /  retry budget exhausted","m_roll":"compensating\nrollback","m_fin_b":"final receipt ROLLED_BACK",
@@ -64,13 +64,13 @@ T = {
   "nnsp":"New NSP","nesmig":"New ESMIG","svs":"PQC-SVS\n(协同枢纽)",
   "inline":"内联混合验签\n(关键路径·阻塞)",
   "nested":"嵌套签名:\n内 ML-DSA-87 + 外 RSA-2048",
-  "dep":"DEP 段:ML-KEM-768 + RSA-OAEP 混合 KEM → AES-256-GCM 隧道",
+  "dep":"DEP 段:ML-KEM-768 + RSA-OAEP\n混合 KEM → AES-256-GCM 隧道",
   "gate":"存量门控:\n仅验外层 RSA",
   "precredit":"预授信 /\n判定信令",
   "sidelane":"侧道验签:内层 ML-DSA\n+ EWMA 看门狗",
   "variantC":"变体③(侧道,§6.6):链路相同但无枢纽跳;\n由 RTGS 经 VERIFY/VERDICT 编排 PQC-SVS 侧车",
   "obs":"结构化事件流 → WebUI 数字孪生  ·  无头基准框架 → CSV(本文全部数据)",
-  "deploy":"同一镜像:单进程(VM 内节点)\n或 12 容器 Docker + tc netem",
+  "deploy":"同一镜像:单进程(VM 内节点)\n或 12 容器\nDocker + tc netem",
   "tcp":"真实 TCP 信封协议 · 真实 ISO 20022 pacs.008 + BAH",
   "f2_title":"图2  预授信/异步验签/补偿回滚(S1–S4b)·协同枢纽拓扑",
   "ln":["参与行","ESMIG(存量)","PQC-SVS(协同枢纽)","RTGS 账本"],
@@ -79,7 +79,7 @@ T = {
   "m_s2":"S2  预授信指令",
   "m_pend":"标记 Pending\n(敞口有界)",
   "m_prov":"临时回执 PRECREDITED — 结算决策 ≈ 4 ms",
-  "m_s3":"S3  侧道验签内层 ML-DSA(不在关键路径)\n看门狗:T_timeout ≥ E[Tc] + 2·T_RTT + k·σ(EWMA 在线)",
+  "m_s3":"S3  侧道验签内层 ML-DSA(不在关键路径)\n看门狗:T_timeout ≥ E[Tpqc] + 2·T_RTT + k·σ(EWMA 在线)",
   "alt_a":"S4a — 判定有效","m_s4a":"VERDICT: VALID","m_commit":"最终确认\n(settled)","m_fin_a":"最终回执 SETTLED",
   "alt_b":"S4b — 判定无效 / 看门狗耗尽(≤20 次对账重试)",
   "m_s4b":"VERDICT: INVALID / 重试预算耗尽","m_roll":"补偿回滚","m_fin_b":"最终回执 ROLLED_BACK",
@@ -98,8 +98,8 @@ def fig1(L, outdir):
     for x,t in zip(xs,[L["part"],L["nsp"]+"-A",L["esmig"]+"-A",L["rtgs"]+" A"]):
         box(ax,x,y1,bw,bh,t,fs=8)
     for i in range(3): arrow(ax,(xs[i]+bw,y1+bh/2),(xs[i+1],y1+bh/2))
-    box(ax,76,y1-0.4,21,5.8,L["inline"],fc="#fdeeee",ec=RED,fs=7.5)
-    arrow(ax,(xs[3]+bw,y1+bh/2),(76,y1+2.5),color=RED)
+    box(ax,75,y1-0.4,23,5.8,L["inline"],fc="#fdeeee",ec=RED,fs=7.0)
+    arrow(ax,(xs[3]+bw,y1+bh/2),(75,y1+2.5),color=RED)
     # —— 流水线② 方案 ——
     ax.add_patch(Rectangle((1,21),98,24,fc="#fbfcfe",ec="#aabbd0",lw=1.0,ls="--"))
     ax.text(2.5,43.0,L["p2"],fontsize=9,color=GREY,fontweight="bold")
@@ -115,8 +115,8 @@ def fig1(L, outdir):
     arrow(ax,(89.5,y2+1.8),(xs2[5]+w2,y2+1.8),color=PUR,ls="--")
     ax.text(91.5,y2-2.6,L["precredit"],fontsize=6.5,ha="center",color=PUR)
     # DEP 隧道带
-    ax.add_patch(Rectangle((26.5,y2-4.6),36.5,2.6,fc="#e6f7ee",ec=GREEN,lw=1.0))
-    ax.text(44.8,y2-3.3,L["dep"],fontsize=6.6,ha="center",color=GREEN)
+    ax.add_patch(Rectangle((26.5,y2-6.0),37,4.2,fc="#e6f7ee",ec=GREEN,lw=1.0))
+    ax.text(45,y2-3.9,L["dep"],fontsize=6.3,ha="center",va="center",color=GREEN)
     # 注释:嵌套签名 / 门控 / 侧道验签
     ax.text(13.5,y2-3.4,L["nested"],fontsize=6.8,ha="center",color=GREY)
     arrow(ax,(8.6,y2-2.0),(8.6,y2),color=GREY,lw=1.0,ls=":")
@@ -130,7 +130,7 @@ def fig1(L, outdir):
     ax.text(33,46.3,L["tcp"],fontsize=8,ha="center",color=INK)
     box(ax,1,13.5,72,5,L["obs"],fc="#f4f6f8",ec=GREY,fs=7.6)
     arrow(ax,(25,21),(25,18.5),color=GREY,ls="--"); arrow(ax,(55,21),(55,18.5),color=GREY,ls="--")
-    box(ax,75,12.8,24,6.2,L["deploy"],fc="#fffbe8",ec=ORANGE,fs=6.8)
+    box(ax,74,11.2,25,7.6,L["deploy"],fc="#fffbe8",ec=ORANGE,fs=6.2)
     save(fig,outdir,"fig1_testbed")
 
 # ============================== 图2 时序 ==============================
@@ -152,8 +152,8 @@ def fig2(L, outdir):
     selfnote(73.5,3,L["m_pend"],fc="#fff7e6")
     msg(68,3,0,L["m_prov"],color=ORANGE,ls="--")
     # S3 自循环(PQC-SVS)
-    box(ax,X[2]-20,58.2,40,6.4,L["m_s3"],fc="#f3effc",ec=PUR,fs=6.8)
-    arrow(ax,(X[2],64.6),(X[2],61.4),color=PUR)
+    box(ax,X[2]-21,58.2,42,6.4,L["m_s3"],fc="#f3effc",ec=PUR,fs=6.4)
+    arrow(ax,(X[2],66.8),(X[2],64.9),color=PUR)
     # alt 框
     ax.add_patch(Rectangle((3,10),94,44,fc="none",ec=GREY,lw=1.2))
     ax.text(4.5,52.0,"alt",fontsize=8,color=GREY,fontweight="bold")
