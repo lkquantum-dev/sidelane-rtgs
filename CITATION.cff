@@ -6,9 +6,9 @@ authors:
     given-names: "Rui"
     orcid: "https://orcid.org/0000-0001-7762-7117"
     affiliation: "Suzhou LangKong Post-Quantum Technology Co., Ltd."
-version: "3.7"
-date-released: "2026-07-12"
-doi: "10.5281/zenodo.21309889"
+version: "3.7.1"
+date-released: "2026-10-19"
+doi: "10.5281/zenodo.21309888"
 repository-code: "https://github.com/lkquantum-dev/sidelane-rtgs"
 license: "LicenseRef-Research-and-Evaluation"
 preferred-citation:
@@ -19,5 +19,6 @@ preferred-citation:
       given-names: "Rui"
       orcid: "https://orcid.org/0000-0001-7762-7117"
       affiliation: "Suzhou LangKong Post-Quantum Technology Co., Ltd."
+  journal: "IEEE Access"
   year: 2026
-  notes: "Manuscript, 2026."
+  notes: "Accepted for publication, October 2026. Manuscript ID Access-2026-46337."

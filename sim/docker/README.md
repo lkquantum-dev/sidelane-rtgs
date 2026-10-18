@@ -13,7 +13,7 @@ docker compose up --build
 停止:`docker compose down`。
 
 > 已在 x64 Windows + Docker Desktop(WSL2,Docker 29.x)实跑通过:构建→启动→5 节点就绪→
-> 真 ML-DSA-87/ML-KEM-768 验签 + 真 ISO 20022 schema 校验 + 看门狗 + 结算全链路。
+> 真 ML-DSA-87/ML-KEM-768 参数集验签(标准化前实现,非 FIPS 203/204 一致,见论文第 IV-G 节) + 真 ISO 20022 schema 校验 + 看门狗 + 结算全链路。
 
 ## 两个曾踩的坑(已在代码/镜像里修好,无需你处理)
 1. **`.so` 可执行栈被内核拒绝**:`cannot enable executable stack as shared object requires`。

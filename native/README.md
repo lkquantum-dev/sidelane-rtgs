@@ -1,8 +1,8 @@
 # LK LEGO PQC library — binary distribution
 
-The testbed's post-quantum primitives (ML-DSA-87 / FIPS 204, ML-KEM-768 / FIPS 203)
-are provided by the **LK LEGO** PQC platform, a production-grade C library developed
-by Suzhou LangKong Post-Quantum Technology Co., Ltd.
+The testbed's post-quantum primitives are provided by the **LK LEGO** PQC platform,
+a C library developed by Suzhou LangKong Post-Quantum Technology Co., Ltd.
+The build shipped here implements the ML-DSA-87 and ML-KEM-768 parameter sets in **pre-standard implementations** (CRYSTALS-Dilithium Round 3 at level 5, and ML-KEM-768 with Round-3 key generation and explicit rejection). They are **not FIPS 203/204-conformant**: signatures are 4,595 B (FIPS 204: 4,627 B) and do not verify under a FIPS 204 verifier. See Section IV-G of the paper for the exact differences and their (nil) effect on the protocol-level results.
 
 These binaries are distributed **for replication of the paper's results only**.
 They are proprietary and are **not** covered by the repository's research license.

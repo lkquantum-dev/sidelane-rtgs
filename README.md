@@ -4,7 +4,7 @@
 
 Artifact for the paper:
 
-> **A Protocol-Level, Reproducible Testbed for Post-Quantum Migration of RTGS: Engineering Realisation and Validation of the Modular Decoupling Scheme.** Rui Liu. (Manuscript, 2026. 中文版:《面向 RTGS 后量子迁移的协议级可复现测试床:模块化解耦方案的工程实现与验证》。)
+> **A Protocol-Level, Reproducible Testbed for Post-Quantum Migration of RTGS: Engineering Realisation and Validation of the Modular Decoupling Scheme.** Rui Liu. *IEEE Access*, 2026, accepted for publication (Manuscript ID Access-2026-46337). (中文版:《面向 RTGS 后量子迁移的协议级可复现测试床:模块化解耦方案的工程实现与验证》。)
 
 Companion papers:
 - Analytical: *A Cost-Model Audit of Project Leap Phase 2: Latency, Capacity, and Migration Safety in Post-Quantum RTGS.* R. Liu, N. Zeng. Accepted at WorldS4 2026 (Springer LNNS).
@@ -25,12 +25,12 @@ No build step: the testbed ships as a prebuilt JAR. Per-platform details are bel
 A runnable, protocol-level digital twin of an RTGS post-quantum migration:
 
 - Every role (participant bank, NSP, New NSP, New ESMIG, ESMIG, PQC-SVS, RTGS core) is a **real process** speaking a **real TCP envelope protocol**, carrying **real ISO 20022 pacs.008 + BAH** messages (schema-validated against the official XSDs);
-- **Real cryptography**: nested ML-DSA-87 + RSA-2048 signatures at the BAH, ML-KEM-768 + RSA-OAEP hybrid KEM + AES-256-GCM tunnel at the DEP leg;
+- **Real cryptography**: nested ML-DSA-87 + RSA-2048 signatures at the BAH, ML-KEM-768 + RSA-OAEP hybrid KEM + AES-256-GCM tunnel at the DEP leg (the lattice primitives are pre-standard, non-FIPS-conformant implementations of these parameter sets; see *Cryptography backend* below);
 - Three topologies: **inline baseline** (Leap's behaviour), **side-lane**, and **coordinator** (PQC-SVS drives the ledger via the pre-credit / async-verify / compensating-rollback cycle S1–S4b);
 - The Watchdog inequality `T_timeout ≥ E[T_pqc] + 2·T_RTT + k·σ` enforced online via EWMA estimates;
 - Same image deploys as a **single process** or a **12-container Docker topology** (with optional `tc netem` WAN shaping).
 
-All figures and tables in the paper regenerate deterministically from the CSVs in `bench/out/`.
+All figures in the paper regenerate deterministically from the CSVs in `bench/out/` (`bench/plot.py`); every table cell can be checked against its CSV (medians, half-up rounding).
 
 ## Layout
 
@@ -117,8 +117,8 @@ python bench/plot_cn.py     # optional: Chinese-label charts -> bench/fig_cn/
 
 ## Cryptography backend
 
-The PQC primitives (ML-DSA-87, ML-KEM-768) are provided by the **LK LEGO** PQC platform,
-a production-grade C library by Suzhou LangKong Post-Quantum Technology Co., Ltd.
+The PQC primitives are provided by the **LK LEGO** PQC platform, a C library by
+Suzhou LangKong Post-Quantum Technology Co., Ltd. The build shipped here implements the ML-DSA-87 and ML-KEM-768 parameter sets in **pre-standard implementations** (CRYSTALS-Dilithium Round 3 at level 5, and ML-KEM-768 with Round-3 key generation and explicit rejection). They are **not FIPS 203/204-conformant**: signatures are 4,595 B (FIPS 204: 4,627 B) and do not verify under a FIPS 204 verifier. See Section IV-G of the paper for the exact differences and their (nil) effect on the protocol-level results.
 It is distributed here **in binary form only** for replication (`native/`); the classical
 RSA layer uses the standard Java JCA. The testbed talks to the library through a narrow,
 flat C ABI (the exported symbols are visible in the binaries), so an alternative backend
